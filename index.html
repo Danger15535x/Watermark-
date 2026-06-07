@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkGuard | Free Image Watermark Adder</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 text-white p-2 rounded-lg shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-copyright text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">MarkGuard</span>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-600">
+                <a href="#adder" class="hover:text-blue-600 transition">Watermark Tool</a>
+                <a href="#features" class="hover:text-blue-600 transition">Features</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-12">
+        
+        <section class="text-center max-w-2xl mx-auto mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+                Protect Your Images With <span class="text-blue-600">Watermarks</span>
+            </h1>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Add text or brand logo watermarks to your work instantly inside your browser. Control opacity, placement, size, and fonts to safeguard your intellectual property.
+            </p>
+        </section>
+
+        <section id="adder" class="bg-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 p-6 md:p-8 mb-16">
+            
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-12 text-center cursor-pointer bg-slate-50 hover:bg-blue-50/30 transition-all group">
+                <input type="file" id="file-input" accept="image/jpeg, image/png, image/webp" class="hidden">
+                <div class="text-blue-500 group-hover:scale-110 transition-transform duration-300 text-5xl mb-4">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <p class="text-lg font-semibold text-slate-700 mb-1">Drag & drop your source photo here</p>
+                <p class="text-sm text-slate-500 mb-4">or click to browse local files</p>
+                <span class="inline-block bg-white border border-slate-200 text-slate-600 font-medium text-xs px-3 py-1.5 rounded-full shadow-sm">
+                    Supports JPEG, PNG, WebP
+                </span>
+            </div>
+
+            <div id="editor-workspace" class="hidden grid md:grid-cols-3 gap-8">
+                
+                <div class="space-y-6 bg-slate-50 border border-slate-200 p-5 rounded-xl h-fit">
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Watermark Type</label>
+                        <div class="grid grid-cols-2 gap-2 bg-slate-200 p-1 rounded-lg">
+                            <button id="tab-text" class="bg-white text-slate-800 font-semibold text-sm py-1.5 px-3 rounded-md shadow-xs cursor-pointer">Text</button>
+                            <button id="tab-logo" class="text-slate-600 font-medium text-sm py-1.5 px-3 rounded-md hover:text-slate-800 cursor-pointer">Logo Image</button>
+                        </div>
+                    </div>
+
+                    <div id="text-controls" class="space-y-4">
+                        <div>
+                            <label for="wm-text" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Watermark Text</label>
+                            <input type="text" id="wm-text" value="© My Studio Name" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="wm-font" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Font Family</label>
+                                <select id="wm-font" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-2 text-sm focus:outline-none">
+                                    <option value="sans-serif">Sans-Serif</option>
+                                    <option value="serif">Serif</option>
+                                    <option value="monospace">Monospace</option>
+                                    <option value="Courier New">Courier</option>
+                                    <option value="Impact">Impact</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="wm-color" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Text Color</label>
+                                <input type="color" id="wm-color" value="#ffffff" class="w-full h-9 bg-white border border-slate-200 rounded-lg p-1 cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="logo-controls" class="hidden space-y-3">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Upload Brand Logo</label>
+                        <div class="relative border border-dashed border-slate-300 bg-white p-3 rounded-lg text-center cursor-pointer hover:bg-blue-50/20">
+                            <input type="file" id="logo-input" accept="image/png, image/jpeg" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <span class="text-xs text-slate-600 font-medium"><i class="fa-solid fa-file-image mr-1 text-blue-500"></i> Select Logo Image</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 border-t border-slate-200 pt-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                <span>Scale Size</span>
+                                <span id="val-size">5%</span>
+                            </div>
+                            <input type="range" id="wm-size" min="1" max="30" value="5" class="w-full accent-blue-600">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                <span>Transparency / Opacity</span>
+                                <span id="val-opacity">60%</span>
+                            </div>
+                            <input type="range" id="wm-opacity" min="10" max="100" value="60" class="w-full accent-blue-600">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Stamp Position Anchor</label>
+                            <div class="grid grid-cols-3 gap-2 w-32 mx-auto">
+                                <button data-pos="top-left" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-up-left"></i></button>
+                                <button data-pos="top-center" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button data-pos="top-right" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-up-right"></i></button>
+                                
+                                <button data-pos="middle-left" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button data-pos="center" class="pos-btn border border-slate-300 bg-blue-600 text-white p-2 rounded-md text-xs cursor-pointer"><i class="fa-solid fa-crosshairs"></i></button>
+                                <button data-pos="middle-right" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-right"></i></button>
+                                
+                                <button data-pos="bottom-left" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-down-left"></i></button>
+                                <button data-pos="bottom-center" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button data-pos="bottom-right" class="pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer"><i class="fa-solid fa-arrow-down-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 space-y-2">
+                        <button id="download-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-blue-100 transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-download"></i> Export Guarded Asset
+                        </button>
+                        <button id="reset-btn" class="w-full bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 text-xs py-2 rounded-lg font-medium transition cursor-pointer">
+                            Swap Base Background Image
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="md:col-span-2 flex flex-col justify-between">
+                    <div class="border border-slate-200 rounded-xl p-3 bg-slate-100 flex items-center justify-center min-h-[400px] h-full shadow-inner relative">
+                        <p class="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider text-slate-400"><i class="fa-solid fa-eye mr-1"></i> Live Real-Time Canvas Stage</p>
+                        <img id="live-preview" class="max-h-[500px] max-w-full object-contain rounded shadow-md border border-white" src="" alt="Live Protected Output Stage">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="features" class="border-t border-slate-200 py-12">
+            <h2 class="text-2xl font-bold text-slate-900 text-center mb-10">Essential Protection for Creators</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-xs">
+                    <div class="text-blue-600 text-xl mb-3"><i class="fa-solid fa-camera animate-pulse"></i></div>
+                    <h3 class="font-bold text-slate-800 mb-1">Photographers</h3>
+                    <p class="text-sm text-slate-600">Apply clean metadata signatures or transparent logos over sample previews before submitting proofs to clients.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-xs">
+                    <div class="text-blue-600 text-xl mb-3"><i class="fa-solid fa-newspaper"></i></div>
+                    <h3 class="font-bold text-slate-800 mb-1">Bloggers & Writers</h3>
+                    <p class="text-sm text-slate-600">Stamp ownership anchors across custom blog content graphs to discourage scraping and asset mirroring across sites.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-xs">
+                    <div class="text-blue-600 text-xl mb-3"><i class="fa-solid fa-share-nodes"></i></div>
+                    <h3 class="font-bold text-slate-800 mb-1">Social Media Managers</h3>
+                    <p class="text-sm text-slate-600">Ensure consistent brand visibility across platforms by uniformly overlaying translucent brand icons.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-sm py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <p>&copy; 2026 MarkGuard Studio. Pixel-level processing executes client-side natively inside browsers.</p>
+        </div>
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const editorWorkspace = document.getElementById('editor-workspace');
+        const livePreview = document.getElementById('live-preview');
+
+        // Type switch components
+        const tabText = document.getElementById('tab-text');
+        const tabLogo = document.getElementById('tab-logo');
+        const textControls = document.getElementById('text-controls');
+        const logoControls = document.getElementById('logo-controls');
+        const logoInput = document.getElementById('logo-input');
+
+        // Input parameter definitions
+        const wmText = document.getElementById('wm-text');
+        const wmFont = document.getElementById('wm-font');
+        const wmColor = document.getElementById('wm-color');
+        const wmSize = document.getElementById('wm-size');
+        const wmOpacity = document.getElementById('wm-opacity');
+        const posButtons = document.querySelectorAll('.pos-btn');
+
+        // Displays updates
+        const valSize = document.getElementById('val-size');
+        const valOpacity = document.getElementById('val-opacity');
+
+        const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // State trackers
+        let activeBaseImg = null;
+        let activeLogoImg = null;
+        let selectedType = 'text'; // 'text' or 'logo'
+        let selectedPosition = 'center';
+        let originalFileName = "protected_image";
+        let originalFileType = "image/jpeg";
+
+        // Click actions integration router paths
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Standard drop behaviors layout assignments
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-blue-500', 'bg-blue-50/50'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-blue-500', 'bg-blue-50/50'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-blue-500', 'bg-blue-50/50');
+            if(e.dataTransfer.files.length > 0) handleBaseFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) handleBaseFile(e.target.files[0]);
+        });
+
+        function handleBaseFile(file) {
+            if (!file.type.match('image.*')) { alert('Please choose a valid base background photo format.'); return; }
+            originalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+            originalFileType = file.type;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                activeBaseImg = new Image();
+                activeBaseImg.onload = () => {
+                    dropZone.classList.add('hidden');
+                    editorWorkspace.classList.remove('hidden');
+                    renderWatermarkPipeline();
+                };
+                activeBaseImg.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Tab selection swapping operations
+        tabText.addEventListener('click', () => {
+            selectedType = 'text';
+            toggleTabStyles(tabText, tabLogo);
+            textControls.classList.remove('hidden');
+            logoControls.classList.add('hidden');
+            renderWatermarkPipeline();
+        });
+        tabLogo.addEventListener('click', () => {
+            selectedType = 'logo';
+            toggleTabStyles(tabLogo, tabText);
+            logoControls.classList.remove('hidden');
+            textControls.classList.add('hidden');
+            renderWatermarkPipeline();
+        });
+
+        function toggleTabStyles(active, inactive) {
+            active.className = "bg-white text-slate-800 font-semibold text-sm py-1.5 px-3 rounded-md shadow-xs cursor-pointer";
+            inactive.className = "text-slate-600 font-medium text-sm py-1.5 px-3 rounded-md hover:text-slate-800 cursor-pointer";
+        }
+
+        // Logo configuration files ingestion paths
+        logoInput.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    activeLogoImg = new Image();
+                    activeLogoImg.onload = () => { renderWatermarkPipeline(); };
+                    activeLogoImg.src = event.target.result;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Event hooks monitoring slider inputs changes for live adjustments updates
+        wmText.addEventListener('input', renderWatermarkPipeline);
+        wmFont.addEventListener('change', renderWatermarkPipeline);
+        wmColor.addEventListener('input', renderWatermarkPipeline);
+        
+        wmSize.addEventListener('input', (e) => { valSize.textContent = e.target.value + '%'; renderWatermarkPipeline(); });
+        wmOpacity.addEventListener('input', (e) => { valOpacity.textContent = e.target.value + '%'; renderWatermarkPipeline(); });
+
+        // Positional coordinate grid switch configuration mappings
+        posButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                posButtons.forEach(b => b.className = "pos-btn border border-slate-200 bg-white p-2 rounded-md text-xs hover:bg-slate-100 cursor-pointer");
+                btn.className = "pos-btn border border-slate-300 bg-blue-600 text-white p-2 rounded-md text-xs cursor-pointer";
+                selectedPosition = btn.getAttribute('data-pos');
+                renderWatermarkPipeline();
+            });
+        });
+
+        // HTML Canvas Rendering core function pipeline algorithm architecture execution blocks
+        function renderWatermarkPipeline() {
+            if (!activeBaseImg) return;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = activeBaseImg.naturalWidth;
+            canvas.height = activeBaseImg.naturalHeight;
+
+            // Draw primary source frame backplate layer
+            ctx.drawImage(activeBaseImg, 0, 0);
+
+            // Compute dynamic anchor geometry offsets references
+            const scaleFactor = wmSize.value / 100;
+            const opacityValue = wmOpacity.value / 100;
+            ctx.globalAlpha = opacityValue;
+
+            let x = canvas.width / 2;
+            let y = canvas.height / 2;
+            const marginX = canvas.width * 0.05;
+            const marginY = canvas.height * 0.05;
+
+            if (selectedType === 'text') {
+                // Configure structural text parameters properties dynamically
+                const computedFontSize = Math.round(canvas.width * (scaleFactor * 0.6) + 12);
+                ctx.font = `${computedFontSize}px ${wmFont.value}`;
+                ctx.fillStyle = wmColor.value;
+                ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                ctx.shadowBlur = 4;
+
+                const textMetrics = ctx.measureText(wmText.value);
+                const textWidth = textMetrics.width;
+                const textHeight = computedFontSize; // Approximation factor
+
+                // Calculate positional logic matrices alignments values structures
+                if (selectedPosition.includes('left')) { ctx.textAlign = 'left'; x = marginX; }
+                else if (selectedPosition.includes('right')) { ctx.textAlign = 'right'; x = canvas.width - marginX; }
+                else { ctx.textAlign = 'center'; x = canvas.width / 2; }
+
+                if (selectedPosition.includes('top')) { y = marginY + textHeight; }
+                else if (selectedPosition.includes('bottom')) { y = canvas.height - marginY; }
+                else { y = (canvas.height / 2) + (textHeight / 3); }
+
+                ctx.fillText(wmText.value, x, y);
+            } 
+            else if (selectedType === 'logo' && activeLogoImg) {
+                // Establish relative structural sizing calculations parameters maps
+                const logoScaleWidth = canvas.width * (scaleFactor * 2);
+                const logoAspect = activeLogoImg.naturalHeight / activeLogoImg.naturalWidth;
+                const logoScaleHeight = logoScaleWidth * logoAspect;
+
+                if (selectedPosition.includes('left')) x = marginX;
+                else if (selectedPosition.includes('right')) x = canvas.width - marginX - logoScaleWidth;
+                else x = (canvas.width / 2) - (logoScaleWidth / 2);
+
+                if (selectedPosition.includes('top')) y = marginY;
+                else if (selectedPosition.includes('bottom')) y = canvas.height - marginY - logoScaleHeight;
+                else y = (canvas.height / 2) - (logoScaleHeight / 2);
+
+                ctx.drawImage(activeLogoImg, x, y, logoScaleWidth, logoScaleHeight);
+            }
+
+            // Flush out memory allocation pipeline directly inside viewport canvas preview layer frame element targets
+            livePreview.src = canvas.toDataURL(originalFileType, 0.95);
+        }
+
+        // Output action triggers wiring mappings links loops logic
+        downloadBtn.addEventListener('click', () => {
+            if(!livePreview.src) return;
+            const linkAnchor = document.createElement('a');
+            linkAnchor.href = livePreview.src;
+            linkAnchor.download = `${originalFileName}_secured.${originalFileType.split('/')[1] || 'jpeg'}`;
+            linkAnchor.click();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            fileInput.value = '';
+            logoInput.value = '';
+            activeBaseImg = null;
+            activeLogoImg = null;
+            editorWorkspace.classList.add('hidden');
+            dropZone.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
